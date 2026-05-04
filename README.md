@@ -24,7 +24,6 @@ Although these are academic reports rather than deployable software, they demons
 
 ## Project 1 — Power Flow Analysis on a 42-Bus System
 
-**Repository name suggestion:** `power-flow-analysis-42bus`
 
 **Tools:** PowerWorld Simulator 23, Microsoft Excel
 
@@ -42,8 +41,6 @@ Although these are academic reports rather than deployable software, they demons
 
 ## Project 2 — Transient Stability and Power System Dynamics
 
-**Repository name suggestion:** `transient-stability-37bus`
-
 **Tools:** PowerWorld Simulator 23 (Transient Stability add-on)
 
 **Summary:** Using the 37-bus Aggieland Power & Light (APL) system at 50 Hz, the team ran time-domain transient stability simulations for five predefined fault contingencies. Critical clearing times (CCT) were found by trial-and-error to ±0.01 s accuracy and then validated analytically using the Equal Area Criterion (EAC).
@@ -59,7 +56,6 @@ Although these are academic reports rather than deployable software, they demons
 
 ## Project 3 — Small Signal Stability Analysis
 
-**Repository name suggestion:** `small-signal-stability-wscc9`
 
 **Tools:** MATLAB (R2023), PowerWorld Simulator 23
 
