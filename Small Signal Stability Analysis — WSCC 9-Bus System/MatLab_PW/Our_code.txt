@@ -1,0 +1,102 @@
+clear
+close all
+clc
+warning off
+path(path,'Load_flow');
+%                                                                         AVR   PSS  
+[A, B, pos_var, ~] = small_sgn_linp('Grid_WSCC_Sauer','gendat_WSCC_9_bus',  1,  1);
+
+%% Eigenanalysis
+[Righteigv,omega,Lefteigv]=eig(A); %Getting Right and left eigenvectors
+eigenvalues=eig(A); %Writing eigenvalue in a Mx1 matrix
+alpha=real(eigenvalues); %Real part of the eigenvalue is alpha
+omega_d=imag(eigenvalues); %Imaginary part of the eigenvalue is omega_d (damped frequency)
+frequency_d=omega_d/(2*pi); %Frequency of the oscillation
+damping_ratio =-alpha./abs(omega);%Formula obtained by playing w/ eq. in slide 11 pg 15
+damping_ratio=diag(damping_ratio); %Writing it as a vector Mx1
+
+%% Study of the right eigenvectors
+Reigen_study=diag(Righteigv); %Study of the diagonal elements to consider what modes are excited
+Reigen_study=round(Reigen_study,6); %Rounding 
+%If the diagonal element is zero -> Mode not excited (I think)
+
+%% Participation factor
+%To study the participation factor only the magnitude is required (hence
+%the abs(), THE FOLLOWING ONE IS NOT THE PARTICIPATION MATRIX, IT IS THE
+%MAGNITUDES OF THE PARTICIPATION MATRIX.
+part_matrix=abs(Righteigv.*Lefteigv); %Definition of participation factor (See the exctract in shared folder pg.14)
+%L1 Norm
+L1_part_matrix=sum(abs(part_matrix)); %L1 norm
+part_matrix=part_matrix./L1_part_matrix; %Normalization
+
+Real_part_matrix=Lefteigv.*(Righteigv).';%Complex participation matrix
+Real_part_matrix=Real_part_matrix./abs(max(Real_part_matrix)); %Normalization
+
+%% Eigenvalues plot 1 (Decide between this and 2 for point a)
+eigenv=plot(eig(A),'x')
+set(eigenv,'linewidth',1) %setting widht
+grid on
+title('Complex plane','fontsize',20)
+xlabel('Real axis','fontsize',20)
+ylabel('Imaginary axis','fontsize',20)
+
+%% Eigenvalues plot 2
+eigenv=compass(eig(A));
+set(eigenv,'linewidth',1.5)
+set(eigenv(1),'color','red')
+set(eigenv(2),'color','red')
+set(eigenv(3),'color','green')
+set(eigenv(4),'color','green')
+title('Eigenvalues','fontsize',20)
+legend('Complex conjugate','','Complex conjugate','fontsize',10,'linewidth',1.5)
+
+%% Eigenvalues plot 3 (USE THIS FOR AVR IF NEEDED)
+eigenv=compass(eig(A));
+set(eigenv,'linewidth',1.5)
+set(eigenv(1),'color','red')
+set(eigenv(2),'color','red')
+set(eigenv(3),'color','green')
+set(eigenv(4),'color','green')
+set(eigenv(5),'color','magenta')
+set(eigenv(6),'color','magenta')
+set(eigenv(7),'color','#77AC30')
+set(eigenv(8),'color','#77AC30')
+set(eigenv(9),'color','cyan')
+set(eigenv(10),'color','cyan')
+set(eigenv(13),'color','#D95319')
+set(eigenv(14),'color','#D95319')
+set(eigenv(15),'color','#7E2F8E')
+set(eigenv(16),'color','#7E2F8E')
+set(eigenv(17),'color','#77AC30')
+set(eigenv(18),'color','#77AC30')
+
+title('Eigenvalues','fontsize',20)
+
+
+
+%% Mode-shapes speed plots 
+speedindex=4:6;
+
+max_lim = 1;
+x_fake=[0 max_lim 0 -max_lim];
+y_fake=[max_lim 0 -max_lim 0];
+%Command use to set the plot limits
+%The chosen limit radius is one b/c the magnitudes are normalized to better study
+%the shape
+   
+%THIS CYCLE WILL PLOT ALL MODES
+for j=1:length(Righteigv)
+   figure(j)
+   h_fake=compass(x_fake,y_fake); %Used to set limits at a given radius  
+   hold on
+   modes=compass(Righteigv(speedindex,j)./max(abs(Righteigv(speedindex,j)))); %Plotting current mode
+   set(modes,'linewidth',1.5) %Setting plot linewidth
+   set(modes(1),'color','blue') %Setting colors
+   set(modes(2),'color','r')
+   set(modes(3),'color','green')
+   legend('','','','','First Generator','Second Generator','Third Generator')
+   N=sprintf('Mode shape N° %i',j); %Naming modes
+   title(N)
+   set(h_fake,'Visible','off'); %Used for setting limits
+   hold off
+end
