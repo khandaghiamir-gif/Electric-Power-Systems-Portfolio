@@ -77,19 +77,10 @@ The project is organised into several file groups:
 Example files included in the project:
 
 ```text
-Pr_01_42bus_start.PWB
-Pr_01_42bus_start.pwd
-Pr_01_42bus_start Solution1.PWB
-Solution 237.PWB
-Generators.xlsx
-P sensitivity.xlsx
-Book1.xlsx
-Project Power Flow 2023-2024_template - Copy.pdf
 
 power-flow-analysis-42bus/
 │
 ├── README.md
-├── LICENSE
 │
 ├── report/
 │   └── power_flow_analysis_report.pdf             ← final submitted report
